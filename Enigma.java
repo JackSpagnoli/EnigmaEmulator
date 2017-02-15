@@ -1,5 +1,31 @@
+import java.util.Random;
+
 class Enigma {
 
+}
+class Reflector{
+    private char[] connections=new char[26];
+    Reflector(char[][] connections) {
+        for (int i=0;i<connections.length;i++){
+            this.connections[(int)connections[i][0]-65]=connections[i][1];
+            this.connections[(int)connections[i][1]-65]=connections[i][0];
+        }
+        char[] remaining={};
+        for (int i=0;i<this.connections.length;i++){
+            if (this.connections[i]=='\u0000'){
+                remaining=arrayAppend.addOn(remaining,(char)(i+65));
+            }
+        }
+        while (remaining.length>0){
+            int temp=new Random().nextInt(remaining.length);
+            this.connections[temp]=remaining[0];
+            this.connections[(int)this.connections[temp]-65]=remaining[temp];
+            remaining=arrayAppend.addOn(arrayAppend.subSet(remaining,1,temp-1),arrayAppend.subSet(remaining,temp+1,remaining.length));
+        }
+    }
+    char nextCharacter(char input){
+        return this.connections[(int)input-65];
+    }
 }
 class Wheel{
     private char[] alphabet;
