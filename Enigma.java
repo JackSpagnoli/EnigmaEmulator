@@ -3,7 +3,9 @@ class Enigma {
 }
 class Wheel{
     private char[] alphabet;
+    private int type;
     Wheel(int id, char startChar){ //1-8
+        this.type=id;
         String[][] temp=new csvReader().readCsv("Wheels.csv");
         char[][] tempc=new char[temp.length][26];
         for (int i=0;i<temp.length;i++){
@@ -20,12 +22,26 @@ class Wheel{
         }
     }
     char nextCharacter(char input){
-        char temp=this.alphabet[(int)input-65];
-        rotate();
-        return temp;
+        return this.alphabet[(int)input-65];
     }
-    private void rotate(){
+    boolean rotate(){
         this.alphabet=arrayAppend.addOn(arrayAppend.subSet(this.alphabet,1,25),alphabet[0]);
+        switch (this.type){
+            case 0:
+                return this.alphabet[25]=='Q';
+            case 1:
+                return this.alphabet[25]=='E';
+            case 2:
+                return this.alphabet[25]=='V';
+            case 3:
+                return this.alphabet[25]=='J';
+            case 4:
+                return this.alphabet[25]=='Z';
+            case 5:case 6:case 7:
+                return this.alphabet[25]=='Z'||this.alphabet[25]=='M';
+            default:
+                return false;
+        }
     }
 }
 class Plugboard{
