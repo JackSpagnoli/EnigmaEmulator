@@ -21,9 +21,9 @@ class Enigma {
     String encrypt(String message){
         String[] messages=message.toUpperCase().split(" ");
         String output="";
-        for (String n:messages){
-            output+=encrypt(n,true);
-            if (messages.length>1&&!n.equals(messages[messages.length-1])){
+        for (int i=0;i<messages.length;i++){
+            output+=encrypt(messages[i],true);
+            if (messages.length>1&&i!=messages.length-1){
                 output+=" ";
             }
         }
