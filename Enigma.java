@@ -93,14 +93,31 @@ class Wheel{
     private int type;
     Wheel(int id, char startChar){ //1-8
         this.type=id;
-        String[][] temp=new csvReader().readCsv("Wheels.csv");
-        char[][] tempc=new char[temp.length][26];
-        for (int i=0;i<temp.length;i++){
-            for (int j=0; j<26;j++){
-                tempc[i][j]=temp[i][j].charAt(0);
-            }
+        switch (id){
+            case 0:
+                this.alphabet="EKMFLGDQVZNTOWYHXUSPAIBRCJ".toCharArray();
+            break;
+            case 1:
+                this.alphabet="AJDKSIRUXBLHWTMCQGZNPYFVOE".toCharArray();
+            break;
+            case 2:
+                this.alphabet="BDFHJLCPRTXVZNYEIWGAKMUSQO".toCharArray();
+            break;
+            case 3:
+                this.alphabet="ESOVPZJAYQUIRHXLNFTGKDCMWB".toCharArray();
+            break;
+            case 4:
+                this.alphabet="VZBRGITYUPSDNHLXAWMJQOFECK".toCharArray();
+            break;
+            case 5:
+                this.alphabet="JPGVOUMFYQBENHZRDKASXLICTW".toCharArray();
+            break;
+            case 6:
+                this.alphabet="NZJHGRCXMYSWBOUFAIVLPEKQDT".toCharArray();
+            break;
+            case 7:
+                this.alphabet="FKQHTLXOCBJSPDZRAMEWNIUYGV".toCharArray();
         }
-        this.alphabet=tempc[id+1];
         for (int i=0;i<this.alphabet.length;i++){
             if(this.alphabet[i]==startChar){
                 this.alphabet=arrayAppend.addOn(arrayAppend.subSet(this.alphabet,i,25),arrayAppend.subSet(this.alphabet,0,i-1));
@@ -144,16 +161,9 @@ class Plugboard{
     private char[] alphabet;
     Plugboard(char[][] matches) {
         this.alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-        for (int i=0;i<2;i++){ //2 Layers
-            for (int j=0;j<matches.length;j++){ //Each character
-                for (int z=0;z<this.alphabet.length;z++){ //Each letter
-                    if (this.alphabet[z]==matches[i][j]&&i==0){
-                        this.alphabet[z]=matches[1][j];
-                    } else if (this.alphabet[z]==matches[i][j]&&i==1){
-                        this.alphabet[z]=matches[0][j];
-                    }
-                }
-            }
+        for (int i=0;i<matches[0].length;i++){
+            this.alphabet[(int)matches[0][i]-65]=matches[1][i];
+            this.alphabet[(int)matches[1][i]-65]=matches[0][i];
         }
     }
     char nextCharacter(char input){
