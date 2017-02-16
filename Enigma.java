@@ -19,6 +19,17 @@ class Enigma {
         }
     }
     String encrypt(String message){
+        String[] messages=message.toUpperCase().split(" ");
+        String output="";
+        for (String n:messages){
+            output+=encrypt(n,true);
+            if (messages.length>1&&!n.equals(messages[messages.length-1])){
+                output+=" ";
+            }
+        }
+        return output;
+    }
+    String encrypt(String message,boolean ignored){
         char[] characters=message.toUpperCase().toCharArray();
         for (int i=0;i<characters.length;i++){
             characters[i]=this.p.nextCharacter(characters[i]);
