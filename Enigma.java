@@ -1,7 +1,49 @@
 import java.util.Random;
-
 class Enigma {
-
+    private Plugboard p;
+    private Reflector r;
+    private Wheel[] w;
+    Enigma(int[] wheels,char[] wheelStartPositions,char[][] plugboardConnections,int reflector) {
+        this.r=new Reflector(reflector);
+        innit(wheels,wheelStartPositions,plugboardConnections);
+    }
+    Enigma(int[] wheels,char[] wheelStartPositions,char[][] plugboardConnections,char[][] reflectorConnections){
+        this.r=new Reflector(reflectorConnections);
+        innit(wheels,wheelStartPositions,plugboardConnections);
+    }
+    private void innit(int[] wheels,char[] wheelStartPositions,char[][] plugboardConnections){
+        this.p=new Plugboard(plugboardConnections);
+        this.w=new Wheel[wheels.length];
+        for (int i=0;i<wheels.length;i++){
+            this.w[i]=new Wheel(wheels[i],wheelStartPositions[i]);
+        }
+    }
+    String encrypt(String message){
+        char[] characters=message.toUpperCase().toCharArray();
+        for (int i=0;i<characters.length;i++){
+            characters[i]=this.p.nextCharacter(characters[i]);
+            for (Wheel aW : this.w) {
+                characters[i] = aW.nextCharacter(characters[i]);
+            }
+            characters[i]=this.r.nextCharacter(characters[i]);
+            for (int j = this.w.length - 1; j >= 0; j--){
+                characters[i]=this.w[j].nextCharacterReturn(characters[i]);
+            }
+            characters[i]=this.p.nextCharacter(characters[i]);
+            int j=0;
+            while(this.w[j].rotate()&&j<this.w.length){
+                j++;
+            }
+        }
+        return toAString(characters);
+    }
+    private String toAString(char[] characters){
+        String t="";
+        for (char character : characters) {
+            t += character;
+        }
+        return t;
+    }
 }
 class Reflector{
     private char[] connections=new char[26];
@@ -24,11 +66,10 @@ class Reflector{
                 break;
         }
     }
-
     Reflector(char[][] connections) {
-        for (int i=0;i<connections.length;i++){
-            this.connections[(int)connections[i][0]-65]=connections[i][1];
-            this.connections[(int)connections[i][1]-65]=connections[i][0];
+        for (char[] connection : connections) {
+            this.connections[(int) connection[0] - 65] = connection[1];
+            this.connections[(int) connection[1] - 65] = connection[0];
         }
         char[] remaining={};
         for (int i=0;i<this.connections.length;i++){
@@ -69,6 +110,15 @@ class Wheel{
     }
     char nextCharacter(char input){
         return this.alphabet[(int)input-65];
+    }
+    char nextCharacterReturn(char input){
+        int i=0;
+        while(true){
+            if (input==alphabet[i]){
+                return (char)(i+65);
+            }
+            i++;
+        }
     }
     boolean rotate(){
         this.alphabet=arrayAppend.addOn(arrayAppend.subSet(this.alphabet,1,25),alphabet[0]);
