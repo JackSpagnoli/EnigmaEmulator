@@ -5,6 +5,26 @@ class Enigma {
 }
 class Reflector{
     private char[] connections=new char[26];
+    Reflector(int type) {
+        switch (type){
+            case 0:
+                this.connections="EJMZALYXVBWFCRQUONTSPIKHGD".toCharArray();
+                break;
+            case 1:
+                this.connections="YRUHQSLDPXNGOKMIEBFZCWVJAT".toCharArray();
+                break;
+            case 2:
+                this.connections="FVPJIAOYEDRZXWGCTKUQSBNMHL".toCharArray();
+                break;
+            case 3:
+                this.connections="ENKQAUYWJICOPBLMDXZVFTHRGS".toCharArray();
+                break;
+            case 4:
+                this.connections="RDOBJNTKVEHMLFCWZAXGYIPSUQ".toCharArray();
+                break;
+        }
+    }
+
     Reflector(char[][] connections) {
         for (int i=0;i<connections.length;i++){
             this.connections[(int)connections[i][0]-65]=connections[i][1];
